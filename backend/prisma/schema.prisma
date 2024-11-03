@@ -15,12 +15,17 @@ model User {
 }
 
 model SearchResult {
-    id        String    @id @default(auto()) @map("_id") @db.ObjectId
-    email     String    @unique
-    accounts  Account[]
-    createdAt DateTime  @default(now())
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  email     String    @unique
+  accounts  Account[]
+  createdAt DateTime  @default(now())
 }
 
 model Account {
-    id          String  @id @default(auto()) @map("_id") @db.ObjectId
-    platform    
+  id              String       @id @default(auto()) @map("_id") @db.ObjectId
+  platform        String
+  accountName     String
+  profileUrl      String
+  searchResultId  String       @db.ObjectId
+  searchResult    SearchResult @relation(fields: [searchResultId], references: [id])
+}
