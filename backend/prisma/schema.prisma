@@ -1,0 +1,31 @@
+datasource db {
+    provider = "mongodb"
+    url      = env("MONGO_URI")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model SearchResult {
+    id        String    @id @default(auto()) @map("_id") @db.ObjectId
+    email     String
+    accounts  Account[]
+    createdAt DateTime  @default(now())
+}
+
+model Account {
+    id          String  @id @default(auto()) @map("_id") @db.ObjectId
+    platform    String
+    accountName String
+    profileUrl  String
+    searchResultId String @db.ObjectId
+    searchResult  SearchResult @relation(fields: [searchResultId], references: [id])
+}
